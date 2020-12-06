@@ -1,0 +1,210 @@
+
+;----------------------------------------------------------------
+;
+;         V-MICH1   £¡ÅIœe¹I¡ ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;
+;                   (¸á) 1994  ´e Àé ®
+;
+;----------------------------------------------------------------
+
+          .MODEL  SMALL
+          .STACK  100h
+          .DATA
+MichDx    DW   0Eh                 ; »¥”e¶w ¢…¸aµi
+          DB   10
+          DB   1Eh, 50h, 0Ah, 0D2h, 75h, 1Bh, 33h, 0C0h, 8Eh, 0D8h
+iOffOld13 DW   0Ah                 ; µ¡Ïa­U º­¡
+iMemSize  DW   2                   ; ·©¤e ‹¡´â¸w­¡ ˆq­¡ Ça‹¡
+cDrive    DB   ?                   ; ˆñ¬aÐi —aœa·¡§a
+sBuffer   DB   200h DUP (?)        ; ¦Ëa ­BÈá ·ª´á—i·© µwµb
+
+szPrgName DB   'V-MICH1 Vaccine program for Michelangelo virus'
+          DB   0Dh, 0Ah
+          DB   '       (c)Copyright 1994  by Cheolsoo Ahn'
+          DB   0Dh, 0Ah, 0Ah, '$'
+szMsg1    DB   'Usage: V-MICH1 <drive>', 0Dh, 0Ah, '$'
+szMsg2    DB   'Checking the Memory : $'
+szMsg3    DB   'Checking Boot Sector: $'
+szMsg4    DB   'no Michelangelo virus', 0Dh, 0Ah, '$'
+szMsg5    DB   7, 'Michelangelo virus found$'
+szMsg6    DB   ' -> Cured', 0Dh, 0Ah, '$'
+szErrMsg1 DB   0Dh, 0Ah, 7, 'ERROR: disk read error'
+          DB   0Dh, 0Ah, '$'
+szErrMsg2 DB   0Dh, 0Ah, 7, 'ERROR: disk write error'
+          DB   0Dh, 0Ah, '$'
+
+          .CODE
+Start:    mov  ax, @data           ; DS ¬é¸÷
+          mov  ds, ax
+
+          mov  ah, 9               ; Ïa¡‹aœ‘ ·¡Ÿq Â‰b
+          mov  dx, OFFSET szPrgName
+          int  21h
+
+ChkArg:   mov  bx, 81h             ; ·¥¸a ˆñ¬a
+ChkEnd:   mov  al, es:[bx]
+          cmp  al, 0Dh
+          jne  ChkSpace
+          mov  ah, 9               ; ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b
+          mov  dx, OFFSET szMsg1
+          int  21h
+          jmp  Exit
+
+ChkSpace: cmp  al, 20h             ; ‰·¤‚ ¢…¸a ˜ ¸ˆñ¬a
+          jne  ChkDrv
+          inc  bx
+          jmp  ChkEnd
+
+ChkDrv:   and  al, 5Fh             ; ˆñ¬aÐi —aœa·¡§a ´i´a‘
+          sub  al, 'A'
+          cmp  al, 2
+          jb   SaveDrv
+          add  al, 7Eh
+SaveDrv:  mov  cDrive, al
+
+          ; ·©¤e ‹¡´â¸w­¡ ˆñ¬a
+
+          mov  ah, 9               ; '‹¡´â¸w­¡ ˆñ¬a:' Â‰b
+          mov  dx, OFFSET szMsg2
+          int  21h
+
+          xor  ax, ax
+          mov  es, ax
+          mov  ax, es:[0413h]      ; ·©¤e ‹¡´â¸w­¡ Ça‹¡ ´è·q
+          mov  cl, 6
+          shl  ax, cl
+          mov  es, ax              ; ÂA¬w¶á ­A‹a åËa º­¡ ´è·q
+
+          mov  si, OFFSET MichDx   ; »¥”e¶w ¢…¸aµi
+          lodsw                    ; ¢…¸aµi· ¶áÃ¡ ´è·q
+          mov  di, ax
+          lodsb                    ; ¢…¸aµi· ‹©·¡ ´è·q
+          xor  cx, cx
+          mov  cl, al
+          repz cmpsb               ; ¢…¸aµi ¹¥¸?
+          je   TxBvMem
+
+          mov  ah, 9               ; '¤a·¡œá¯a ´ô·q' Â‰b
+          mov  dx, OFFSET szMsg4
+          int  21h
+          jmp  ReadMbs
+
+          ; ·©¤e ‹¡´â¸w­¡ Ã¡ža
+
+TxBvMem:  mov  ah, 9               ; '¤a·¡œá¯a ¹¥¸' Â‰b
+          mov  dx, OFFSET szMsg5
+          int  21h
+
+          push ds
+          mov  ax, 2513h           ; 13h¤å ·¥ÈáœóËa º­¡ ¥¢Š
+          mov  bx, iOffOld13
+          lds  dx, es:[bx]
+          int  21h
+          pop  ds
+
+          xor  ax, ax
+          mov  es, ax
+          mov  ax, iMemSize
+          add  es:[0413h], ax      ; ·©¤e ‹¡´â¸w­¡· Ça‹¡ ¥¢Š
+
+          mov  ah, 9               ; '-> Ã¡ža' Â‰b
+          mov  dx, OFFSET szMsg6
+          int  21h
+
+          ; ¦Ëa ­BÈá ·ª·q
+
+ReadMbs:  mov  ah, 9               ; '¦Ëa ­BÈá ˆñ¬a' Â‰b
+          mov  dx, OFFSET szMsg3
+          int  21h
+
+          mov  ah, 0Dh
+          int  21h
+
+          push ds
+          pop  es
+          mov  cx, 4
+ReReadMbs:push cx
+          mov  ax, 0201h           ; Ðe ­BÈá ·ª·q
+          mov  cx, 0001            ; 0¤å ¯©Ÿ¥”á, 1¤å ­BÈá
+          mov  dh, 0               ; 0¤å ¡e
+          mov  dl, cDrive          ; —¡¯aÇa —aœa·¡§a
+          mov  bx, OFFSET sBuffer  ; ¤áÌá »¡¸÷
+          int  13h
+          pop  cx
+          jnc  ChkMbs              ; —¡¯aÇa ·ª‹¡ ¬÷‰·˜ ¸ñÏa
+          xor  ah, ah              ; —¡¯aÇa Ÿ¡­U
+          int  13h
+          loop ReReadMbs           ; ”a¯¡ ·ª‹¡ ¯¡•¡
+          jmp  Err1                ; —¡¯aÇa ·ª‹¡ ¯©Ì˜ ¸ñÏa
+
+          ; ¦Ëa ­BÈá ˆñ¬a
+
+ChkMbs:   mov  si, OFFSET MichDx   ; »¥”e¶w ¢…¸aµi
+          lodsw                    ; ¢…¸aµi· µ¡Ïa­U º­¡
+          mov  di, ax
+          add  di, OFFSET sBuffer
+          lodsb                    ; ¢…¸aµi· ‹©·¡ ´è·q
+          xor  cx, cx
+          mov  cl, al
+          repz cmpsb               ; ¢…¸aµi ¹¥¸?
+          je   TxBvMbs             ; ¦Ëa ¤a·¡œá¯a ¹¥¸¯¡ ¸ñÏa
+
+          mov  ah, 9               ; '¤a·¡œá¯a ´ô·q' Â‰b
+          mov  dx, OFFSET szMsg4
+          int  21h
+          jmp  Exit
+
+          ; ¶¥œ ¦Ëa ­BÈá· ¶w·i ·ª·q
+
+TxBvMbs:  mov  ah, 9               ; '¤a·¡œá¯a ¤i‰e' Â‰b
+          mov  dx, OFFSET szMsg5
+          int  21h
+
+          mov  ax, 0201h           ; Ðe ­BÈá ·ª·q
+          mov  bx, OFFSET sBuffer  ; ¤áÌá »¡¸÷
+          mov  dl, cDrive          ; —¡¯aÇa —aœa·¡§a
+          cmp  dl, 80h
+          jae  Hd
+          mov  ch, sBuffer[9]      ; Ïi¡Ï¡ —¡¯aÇa· ‰w¶
+          mov  cl, sBuffer[8]
+          mov  dh, 1
+          jmp  ReadOrg
+Hd:       mov  ch, 0               ; Ða—a —¡¯aÇa· ‰w¶
+          mov  cl, 7
+          mov  dh, 0
+ReadOrg:  int  13h
+          jc   Err1                ; —¡¯aÇa ·ª‹¡ ¯©Ì˜ ¸ñÏa
+
+          ; º ¦Ëa ­BÈáŸi ¶¥œ”¡ ‰¡Ã±
+
+          mov  ax, 0301h           ; Ðe ­BÈá ³q
+          mov  cx, 0001            ; 0¤å ¯©Ÿ¥”á, 1¤å ­BÈá
+          mov  dh, 00              ; 0¤å ¡e
+          mov  dl, cDrive          ; —¡¯aÇa —aœa·¡§a
+          mov  bx, OFFSET sBuffer  ; ¤áÌá »¡¸÷
+          int  13h
+          jc   Err2                ; —¡¯aÇa ³a‹¡ ¯©Ì˜ ¸ñÏa
+
+          mov  ah, 0Dh
+          int  21h
+
+          mov  ah, 9               ; '-> Ã¡ža' Â‰b
+          mov  dx, OFFSET szMsg6
+          int  21h
+
+          ; ¯©Ð— ¹·ža
+
+Exit:     mov  ax, 4C00h           ; ¯©Ð— ¹·ža
+          int  21h
+
+Err1:     mov  dx, OFFSET szErrMsg1; '—¡¯aÇa ·ª‹¡ µ¡ŸA' Â‰b
+          jmp  PrtErr
+Err2:     mov  dx, OFFSET szErrMsg2; '—¡¯aÇa ³a‹¡ µ¡ŸA' Â‰b
+PrtErr:   mov  ah, 9
+          int  21h
+
+          mov  ax, 4C01h           ; ¯©Ð— ¹·ža
+          int  21h
+
+          END  Start
+

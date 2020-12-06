@@ -1,0 +1,130 @@
+
+/*---------------------------------------------------------------
+;
+;         V-LBC2    LBC ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;
+;                   (¸á) 1994  ´e Àé ®
+;
+;--------------------------------------------------------------*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <bios.h>
+#include <dos.h>
+
+struct DxStr {                     /* ¢…¸aµi ¯aËaœâÁa ¸÷· */
+    unsigned int iOffset;
+    unsigned char cLen, sVirStr[10];
+};
+struct DxStr LbcMemDx = {          /* ‹¡´â¸w­¡ »¥”e¶w ¢…¸aµi */
+    0x117,
+    10,
+    {0x48, 0x48, 0x89, 0x07, 0xB1, 0x06, 0xD3, 0xE0, 0x8E, 0xC0}
+};
+struct DxStr LbcMbsDx = {          /* ¦Ëa ­BÈá »¥”e¶w ¢…¸aµi */
+    0x17,
+    10,
+    {0x48, 0x48, 0x89, 0x07, 0xB1, 0x06, 0xD3, 0xE0, 0x8E, 0xC0}
+};
+unsigned int iOffOld13 = 0x178;    /* µ¡Ïa­U º­¡ */
+unsigned int iMemSize = 2;         /* ·©¤e ‹¡´â¸w­¡ ˆq­¡ Ça‹¡ */
+unsigned char i, cDrive, sBuffer[0x200];
+char far *lpcMem;
+int  far *lpiMem;
+union REGS r;
+struct SREGS sr;
+
+char szPrgName[]  = "V-LBC2 Vaccine program for LBC virus\n"
+                "      (c)Copyright 1994  by Cheolsoo Ahn\n\n";
+char szMsg1[]    = "Usage: V-LBC2 <drive>\n";
+char szMsg2[]    = "Checking the Memory : ";
+char szMsg3[]    = "Checking Boot Sector: ";
+char szMsg4[]    = "no LBC virus\n";
+char szMsg5[]    = "\aLBC virus found";
+char szMsg6[]    = " -> Cured\n";
+char szErrMsg1[] = "\n\aERROR: disk read error\n";
+char szErrMsg2[] = "\n\aERROR: disk write error\n";
+
+int main(int argc, char *argv[])
+{
+    printf("%s", szPrgName);       /* Ïa¡‹aœ‘ ·¡Ÿq Â‰b */
+
+    if (argc == 1) {               /* ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b */
+        printf("%s", szMsg1);
+        exit(0);
+    }
+
+    cDrive = toupper(*argv[1]) - 'A';
+    if (cDrive >= 2)
+        cDrive += 0x7E;            /* ˆñ¬aÐi —aœa·¡§a ´i´a‘ */
+
+    /* ·©¤e ‹¡´â¸w­¡ ˆñ¬a */
+
+    printf("%s", szMsg2);          /* '‹¡´â¸w­¡ ˆñ¬a:' Â‰b */
+    lpcMem = MK_FP(biosmemory() << 6, LbcMemDx.iOffset);
+    for (i = 0; i < LbcMemDx.cLen; i++)
+        if (lpcMem[i] != LbcMemDx.sVirStr[i]) break;
+    if (i != LbcMemDx.cLen)
+        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+    else {
+        printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        r.x.ax = 0x2513;
+        lpiMem = MK_FP(biosmemory() << 6, iOffOld13);
+        r.x.dx = *lpiMem++;
+        sr.ds  = *lpiMem;
+        intdosx(&r, &r, &sr);      /* 13h¤å ·¥ÈáœóËa º­¡ ¥¢Š */
+        lpiMem = MK_FP(0x0000, 0x0413);
+        *lpiMem += iMemSize;       /* ·©¤e ‹¡´â¸w­¡· Ça‹¡ ¥¢Š */
+        printf("%s", szMsg6);      /* '-> Ã¡ža' Â‰b */
+    }
+
+    /* ¦Ëa ­BÈá ·ª·q */
+
+    printf("%s", szMsg3);          /* '¦Ëa ­BÈá ˆñ¬a:' Â‰b */
+
+    r.h.ah = 0x0D;
+    intdos(&r, &r);
+
+    for (i = 0; i < 4; i++) {
+        if (biosdisk(2, cDrive, 0, 0, 1, 1, sBuffer) == 0) break;
+        biosdisk(0, cDrive, 0, 0, 1, 1, sBuffer);
+    }
+    if (i == 4) {
+        printf("%s", szErrMsg1);   /* —¡¯aÇa ·ª‹¡ µ¡ŸA */
+        exit(1);
+    }
+
+    /* ¦Ëa ­BÈá ˆñ¬a */
+
+    for (i = 0; i < LbcMbsDx.cLen; i++)
+        if (sBuffer[LbcMbsDx.iOffset + i] != LbcMbsDx.sVirStr[i])
+            break;
+    if (i != LbcMbsDx.cLen)
+        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+    else {
+        printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+
+        /* ¶¥œ ¦Ëa ­BÈá ·ª·q */
+        if (biosdisk(2, cDrive, sBuffer[0x63], sBuffer[0x5E],
+                      sBuffer[0x5D], 1, sBuffer)) {
+            printf("%s", szErrMsg1); /* —¡¯aÇa ·ª‹¡ µ¡ŸA */
+            exit(1);
+        }
+
+        /* ¦Ëa ­BÈá Ã¡ža */
+        if (biosdisk(3, cDrive, 0, 0, 1, 1, sBuffer)) {
+            printf("%s", szErrMsg2); /* —¡¯aÇa ³a‹¡ µ¡ŸA */
+            exit(1);
+        }
+
+        r.h.ah = 0x0D;
+        intdos(&r, &r);
+
+        printf("%s", szMsg6);      /* '-> Ã¡ža' Â‰b */
+    }
+
+    return 0;
+}
+
+
