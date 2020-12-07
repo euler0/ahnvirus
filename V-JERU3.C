@@ -1,9 +1,9 @@
 
 /*---------------------------------------------------------------
 ;
-;         V-JERU3   µž¬iQ ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;         V-JERU3   ì˜ˆë£¨ì‚´ë ˜ ë°”ì´ëŸ¬ìŠ¤ìš© ë°±ì‹  í”„ë¡œê·¸ëž¨
 ;
-;                   (¸á) 1994  ´e Àé ®
+;                   (ì €) 1994  ì•ˆ ì²  ìˆ˜
 ;
 ;--------------------------------------------------------------*/
 
@@ -17,17 +17,17 @@
 
 #define FA_LIST (FA_RDONLY|FA_HIDDEN|FA_SYSTEM|FA_DIREC|FA_ARCH)
 
-struct DxStr JeruMemDx = {         /* ‹¡´â¸w­¡ »¥”e¶w ¢…¸aµi */
+struct DxStr JeruMemDx = {         /* ê¸°ì–µìž¥ì†Œ ì§„ë‹¨ìš© ë¬¸ìžì—´ */
     0x00C5,
     10,
     {0xFC, 0x06, 0x2E, 0x8C, 0x06, 0x31, 0x00, 0x2E, 0x8C, 0x06}
 };
-struct DxStr JeruComDx = {         /* COM Ìa·© »¥”e¶w ¢…¸aµi */
+struct DxStr JeruComDx = {         /* COM íŒŒì¼ ì§„ë‹¨ìš© ë¬¸ìžì—´ */
     0x0030,
     10,
     {0xFC, 0x06, 0x2E, 0x8C, 0x06, 0x31, 0x00, 0x2E, 0x8C, 0x06}
 };
-struct DxStr JeruExeDx = {         /* EXE Ìa·© »¥”e¶w ¢…¸aµi */
+struct DxStr JeruExeDx = {         /* EXE íŒŒì¼ ì§„ë‹¨ìš© ë¬¸ìžì—´ */
     0x0000,
     10,
     {0xFC, 0x06, 0x2E, 0x8C, 0x06, 0x31, 0x00, 0x2E, 0x8C, 0x06}
@@ -42,8 +42,8 @@ struct FvExeTxA0 JeruExeTx = {
     0xC5, 0x49, 0, 0x47, 0, 0x45, 0, 0x43, 0
 };
 
-unsigned char cDrive;              /* ˆñ¬aÐi —aœa·¡§a */
-unsigned int iInfFile = 0;         /* ˆqµq Ìa·© ® */
+unsigned char cDrive;              /* ê²€ì‚¬í•  ë“œë¼ì´ë¸Œ */
+unsigned int iInfFile = 0;         /* ê°ì—¼ íŒŒì¼ ìˆ˜ */
 
 char szPrgName[]  = "V-JERU Vaccine program for Jerusalem virus"
                "\n       (c)Copyright 1994  by Cheolsoo Ahn\n\n";
@@ -69,41 +69,41 @@ int main(int argc, char *argv[])
     unsigned char cOldDrive;
     char szOldDir[0x80] = {'\\',};
 
-    printf("%s", szPrgName);       /* Ïa¡‹aœ‘ ·¡Ÿq Â‰b */
+    printf("%s", szPrgName);       /* í”„ë¡œê·¸ëž¨ ì´ë¦„ ì¶œë ¥ */
 
-    if (argc == 1) {               /* ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b */
+    if (argc == 1) {               /* ì¸ìž ì—†ì„ ë•Œ ë„ì›€ë§ ì¶œë ¥ */
         printf("%s", szMsg1);
         exit(0);
     }
 
     cDrive = toupper(*argv[1]) - 'A';
 
-    /* ·©¤e ‹¡´â¸w­¡ ˆñ¬a */
+    /* ì¼ë°˜ ê¸°ì–µìž¥ì†Œ ê²€ì‚¬ */
 
-    printf("%s", szMsg2);          /* '‹¡´â¸w­¡ ˆñ¬a:' Â‰b */
+    printf("%s", szMsg2);          /* 'ê¸°ì–µìž¥ì†Œ ê²€ì‚¬:' ì¶œë ¥ */
     if (CheckFileVirusInMem(&JeruMemDx) == 0)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ìž¬' ì¶œë ¥ */
         CureFileVirusInMem(0x80, &JeruMemTx);
-        printf("%s", szMsg7);      /* '-> Ã¡ža' Â‰b */
+        printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
-    /* Ìa·©—i ˆñ¬a */
+    /* íŒŒì¼ë“¤ ê²€ì‚¬ */
 
-    printf("%s", szMsg3);          /* 'Ìa·©—i ˆñ¬a:' Â‰b */
+    printf("%s", szMsg3);          /* 'íŒŒì¼ë“¤ ê²€ì‚¬:' ì¶œë ¥ */
 
-    cOldDrive = getdisk();         /* Ñe¸ —aœa·¡§a ´è·q */
-    getcurdir(0, szOldDir + 1);    /* Ñe¸ —¡BÉ¡Ÿ¡ ´è·q */
+    cOldDrive = getdisk();         /* í˜„ìž¬ ë“œë¼ì´ë¸Œ ì–»ìŒ */
+    getcurdir(0, szOldDir + 1);    /* í˜„ìž¬ ë””ë ‰í† ë¦¬ ì–»ìŒ */
 
-    setdisk(cDrive);               /* ˆñ¬aÐi —aœa·¡§a¡ ¤aŽ‘ */
-    chdir("\\");                   /* º —¡BÉ¡Ÿ¡¡ ¤aŽ‘ */
+    setdisk(cDrive);               /* ê²€ì‚¬í•  ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ */
+    chdir("\\");                   /* ì£¼ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ */
 
-    if (CheckFiles("") == 0)       /* Ìa·©—i ˆñ¬a */
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+    if (CheckFiles("") == 0)       /* íŒŒì¼ë“¤ ê²€ì‚¬ */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
 
-    setdisk(cOldDrive);            /* ¶¥œ —aœa·¡§a¡ ¤aŽ‘ */
-    chdir(szOldDir);               /* ¶¥œ —¡BÉ¡Ÿ¡¡ ¤aŽ‘ */
+    setdisk(cOldDrive);            /* ì›ëž˜ ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ */
+    chdir(szOldDir);               /* ì›ëž˜ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ */
 
     return 0;
 }
@@ -114,27 +114,27 @@ int CheckFiles(char *szPath)
     int iFirst = 1, iStatus, iResult;
     struct ffblk FileBlock;
 
-    strcpy(szCurPath, szPath);     /* ˆñ¬aÐi —¡BÉ¡Ÿ¡ */
+    strcpy(szCurPath, szPath);     /* ê²€ì‚¬í•  ë””ë ‰í† ë¦¬ */
     strcat(szCurPath, "\\");
     strcat(szCurPath, "*.*");
 
     while(1) {
-        if (iFirst) {              /* Ìa·©·i Àx·q */
+        if (iFirst) {              /* íŒŒì¼ì„ ì°¾ìŒ */
             iStatus = findfirst(szCurPath, &FileBlock, FA_LIST);
             iFirst  = 0;
         } else
             iStatus = findnext(&FileBlock);
-        if (iStatus) return iInfFile; /* ”á ·¡¬w Ìa·©·¡ ´ô·q */
+        if (iStatus) return iInfFile; /* ë” ì´ìƒ íŒŒì¼ì´ ì—†ìŒ */
 
         if (strcmp(FileBlock.ff_name, ".") == 0) continue;
         if (strcmp(FileBlock.ff_name, "..") == 0) continue;
 
-        strcpy(szNewPath, szPath); /* Àx·e Ìa·© ·¡Ÿq */
+        strcpy(szNewPath, szPath); /* ì°¾ì€ íŒŒì¼ ì´ë¦„ */
         strcat(szNewPath, "\\");
         strcat(szNewPath, FileBlock.ff_name);
 
         if (FileBlock.ff_attrib & FA_DIREC) {
-            CheckFiles(szNewPath); /* ¸Šá Ñ¡Â‰ */
+            CheckFiles(szNewPath); /* ìž¬ê·€ í˜¸ì¶œ */
         } else {
             if ((iResult = CheckFileType(szNewPath)) == -1) {
                 switch (wErrCode) {
@@ -145,18 +145,18 @@ int CheckFiles(char *szPath)
                 }
             }
             if (iResult == 0)
-                CheckCom(szNewPath); /* COM Ìa·© ˆñ¬a */
+                CheckCom(szNewPath); /* COM íŒŒì¼ ê²€ì‚¬ */
             else
-                CheckExe(szNewPath); /* EXE Ìa·© ˆñ¬a */
+                CheckExe(szNewPath); /* EXE íŒŒì¼ ê²€ì‚¬ */
         }
     }
 }
 
-void CheckCom(char *szCom)         /* COM Ìa·© ˆñ¬a */
+void CheckCom(char *szCom)         /* COM íŒŒì¼ ê²€ì‚¬ */
 {
     int iResult;
 
-    /* ¤a·¡œá¯a ˆñ¬a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬ */
 
     if ((iResult=CheckFileVirusInCOM(szCom, &JeruComDx)) == -1) {
         switch (wErrCode) {
@@ -167,13 +167,13 @@ void CheckCom(char *szCom)         /* COM Ìa·© ˆñ¬a */
         }
     }
 
-    /* ¤a·¡œá¯a Ã¡ža */
+    /* ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ */
 
     if (iResult) {
-        iInfFile++;                /* ˆqµq Ìa·© ® »wˆa */
+        iInfFile++;                /* ê°ì—¼ íŒŒì¼ ìˆ˜ ì¦ê°€ */
         printf("%c:%s", cDrive + 'A', szCom);
         printf("%s", szMsg5);
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ìž¬' ì¶œë ¥ */
 
         if (CureFileVirusInCOM(szCom, 0x30, &JeruComTx) == -1) {
             switch (wErrCode) {
@@ -190,15 +190,15 @@ void CheckCom(char *szCom)         /* COM Ìa·© ˆñ¬a */
             }
         }
 
-        printf("%s", szMsg7);      /* '-> Ã¡ža' Â‰b */
+        printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 }
 
-void CheckExe(char *szExe)         /* EXE Ìa·© ˆñ¬a */
+void CheckExe(char *szExe)         /* EXE íŒŒì¼ ê²€ì‚¬ */
 {
     int iResult;
 
-    /* ¤a·¡œá¯a ˆñ¬a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬ */
 
     if ((iResult=CheckFileVirusInEXE(szExe, &JeruExeDx)) == -1) {
         switch (wErrCode) {
@@ -209,13 +209,13 @@ void CheckExe(char *szExe)         /* EXE Ìa·© ˆñ¬a */
         }
     }
 
-    /* ¤a·¡œá¯a Ã¡ža */
+    /* ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ */
 
     if (iResult) {
-        iInfFile++;                /* ˆqµq Ìa·© ® »wˆa */
+        iInfFile++;                /* ê°ì—¼ íŒŒì¼ ìˆ˜ ì¦ê°€ */
         printf("%c:%s", cDrive + 'A', szExe);
         printf("%s", szMsg5);
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ìž¬' ì¶œë ¥ */
 
         if (CureFileVirusInEXE(szExe, 0xA0, &JeruExeTx) == -1) {
             switch (wErrCode) {
@@ -230,6 +230,6 @@ void CheckExe(char *szExe)         /* EXE Ìa·© ˆñ¬a */
             }
         }
 
-        printf("%s", szMsg7);      /* '-> Ã¡ža' Â‰b */
+        printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 }

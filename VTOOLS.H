@@ -3,11 +3,11 @@
 ;
 ;         Header file for Vaccine Toolkit (Version 2.0)
 ;
-;                   (Έα) 1994  ΄e ΐι ®
+;                   (μ €) 1994  μ• μ²  μ
 ;
 ;--------------------------------------------------------------*/
 
-/* ΔρΟAΘα ¤a·΅α―a Έaa Ή΅ΑA Έχ· */
+/* μ»΄ν“¨ν„° λ°”μ΄λ¬μ¤ μλ£ κµ¬μ΅°μ²΄ μ •μ */
 
 struct DxStr {
     unsigned int iOffset;
@@ -63,11 +63,11 @@ struct FvExeTxA0 {
                             iOffOldSS, iAddSS, iOffOldSP, iAddSP;
 };
 
-/* ¶A¦ ¥e® Έχ· */
+/* μ™Έλ¶€ λ³€μ μ •μ */
 
 extern int wErrCode;
 
-/* ¤‚―¥ Κ‰Η΅Λa Πq® Έχ· */
+/* λ°±μ‹  ν΄ν‚¤νΈ ν•¨μ μ •μ */
 
 extern int CheckBootVirusInMem();
 extern int CureBootVirusInMem();

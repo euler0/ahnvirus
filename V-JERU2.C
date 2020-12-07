@@ -1,9 +1,9 @@
 
 /*---------------------------------------------------------------
 ;
-;         V-JERU2   µ¬iQ ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;         V-JERU2   ì˜ˆë£¨ì‚´ë ˜ ë°”ì´ëŸ¬ìŠ¤ìš© ë°±ì‹  í”„ë¡œê·¸ë¨
 ;
-;                   (¸á) 1994  ´e Àé ®
+;                   (ì €) 1994  ì•ˆ ì²  ìˆ˜
 ;
 ;--------------------------------------------------------------*/
 
@@ -20,32 +20,32 @@
 
 #define FA_LIST (FA_RDONLY|FA_HIDDEN|FA_SYSTEM|FA_DIREC|FA_ARCH)
 
-struct DxStr {                     /* ¢…¸aµi ¯aËaœâÁa ¸÷· */
+struct DxStr {                     /* ë¬¸ìì—´ ìŠ¤íŠ¸ëŸ­ì³ ì •ì˜ */
     unsigned int iOffset;
     unsigned char cLen, sVirStr[10];
 };
-struct DxStr JeruMemDx = {         /* ‹¡´â¸w­¡ »¥”e¶w ¢…¸aµi */
+struct DxStr JeruMemDx = {         /* ê¸°ì–µì¥ì†Œ ì§„ë‹¨ìš© ë¬¸ìì—´ */
     0x00C5,
     10,
     {0xFC, 0x06, 0x2E, 0x8C, 0x06, 0x31, 0x00, 0x2E, 0x8C, 0x06}
 };
-struct DxStr JeruExeDx = {         /* EXE Ìa·© »¥”e¶w ¢…¸aµi */
+struct DxStr JeruExeDx = {         /* EXE íŒŒì¼ ì§„ë‹¨ìš© ë¬¸ìì—´ */
     0x0000,
     10,
     {0xFC, 0x06, 0x2E, 0x8C, 0x06, 0x31, 0x00, 0x2E, 0x8C, 0x06}
 };
-unsigned int iVirLn    = 0x710;    /* ¤a·¡œá¯a ‹©·¡ */
-unsigned int iEntStLn  = 0xC5;     /* ¯¡¸b¸ñ Àa·¡ ‹©·¡ */
-unsigned int iOffOld21 = 0x17;     /* ¶¥œ ·¥ÈáœóËa ¸á¸w ¶áÃ¡ */
-unsigned int iOffOldLn = 0x11;     /* ¶¥œ Ìa·© ‹©·¡ ¸á¸w ¶áÃ¡ */
-unsigned int iOffCS    = 0x49;     /* ¶¥œ CS ˆt ¸á¸w ¶áÃ¡ */
-unsigned int iOffIP    = 0x47;     /* ¶¥œ IP ˆt ¸á¸w ¶áÃ¡ */
-unsigned int iOffSS    = 0x45;     /* ¶¥œ SS ˆt ¸á¸w ¶áÃ¡ */
-unsigned int iOffSP    = 0x43;     /* ¶¥œ SP ˆt ¸á¸w ¶áÃ¡ */
+unsigned int iVirLn    = 0x710;    /* ë°”ì´ëŸ¬ìŠ¤ ê¸¸ì´ */
+unsigned int iEntStLn  = 0xC5;     /* ì‹œì‘ì  ì°¨ì´ ê¸¸ì´ */
+unsigned int iOffOld21 = 0x17;     /* ì›ë˜ ì¸í„°ëŸ½íŠ¸ ì €ì¥ ìœ„ì¹˜ */
+unsigned int iOffOldLn = 0x11;     /* ì›ë˜ íŒŒì¼ ê¸¸ì´ ì €ì¥ ìœ„ì¹˜ */
+unsigned int iOffCS    = 0x49;     /* ì›ë˜ CS ê°’ ì €ì¥ ìœ„ì¹˜ */
+unsigned int iOffIP    = 0x47;     /* ì›ë˜ IP ê°’ ì €ì¥ ìœ„ì¹˜ */
+unsigned int iOffSS    = 0x45;     /* ì›ë˜ SS ê°’ ì €ì¥ ìœ„ì¹˜ */
+unsigned int iOffSP    = 0x43;     /* ì›ë˜ SP ê°’ ì €ì¥ ìœ„ì¹˜ */
 
-unsigned char cDrive;              /* ˆñ¬aĞi —aœa·¡§a */
-char sBuffer[0x200];               /* Ìa·© ·ª´á—i·¡“e ¤áÌá */
-unsigned int iInfFile = 0;         /* ˆqµq Ìa·© ® */
+unsigned char cDrive;              /* ê²€ì‚¬í•  ë“œë¼ì´ë¸Œ */
+char sBuffer[0x200];               /* íŒŒì¼ ì½ì–´ë“¤ì´ëŠ” ë²„í¼ */
+unsigned int iInfFile = 0;         /* ê°ì—¼ íŒŒì¼ ìˆ˜ */
 
 char szPrgName[]  = "V-JERU2 Vaccine program for Jerusalem virus"
                "\n       (c)Copyright 1994  by Cheolsoo Ahn\n\n";
@@ -76,48 +76,48 @@ int main(int argc, char *argv[])
     union REGS r;
     struct SREGS sr;
 
-    printf("%s", szPrgName);       /* Ïa¡‹aœ‘ ·¡Ÿq Â‰b */
+    printf("%s", szPrgName);       /* í”„ë¡œê·¸ë¨ ì´ë¦„ ì¶œë ¥ */
 
-    if (argc == 1) {               /* ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b */
+    if (argc == 1) {               /* ì¸ì ì—†ì„ ë•Œ ë„ì›€ë§ ì¶œë ¥ */
         printf("%s", szMsg1);
         exit(0);
     }
 
     cDrive = toupper(*argv[1]) - 'A';
 
-    /* ·©¤e ‹¡´â¸w­¡ ˆñ¬a */
+    /* ì¼ë°˜ ê¸°ì–µì¥ì†Œ ê²€ì‚¬ */
 
-    printf("%s", szMsg2);          /* '‹¡´â¸w­¡ ˆñ¬a:' Â‰b */
+    printf("%s", szMsg2);          /* 'ê¸°ì–µì¥ì†Œ ê²€ì‚¬:' ì¶œë ¥ */
     lpcMem = MK_FP(FP_SEG(getvect(0x21)), JeruMemDx.iOffset);
     for (i = 0; i < JeruMemDx.cLen; i++)
         if (lpcMem[i] != JeruMemDx.sVirStr[i]) break;
     if (i != JeruMemDx.cLen)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
         r.x.ax = 0x2521;
         lpiMem = MK_FP(FP_SEG(getvect(0x21)), iOffOld21);
         r.x.dx = *lpiMem++;
         sr.ds  = *lpiMem;
-        intdosx(&r, &r, &sr);      /* 21h¤å ·¥ÈáœóËa º­¡ ¥¢Š */
-        printf("%s", szMsg7);      /* '-> Ã¡a' Â‰b */
+        intdosx(&r, &r, &sr);      /* 21hë²ˆ ì¸í„°ëŸ½íŠ¸ ì£¼ì†Œ ë³µêµ¬ */
+        printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
-    /* Ìa·©—i ˆñ¬a */
+    /* íŒŒì¼ë“¤ ê²€ì‚¬ */
 
-    printf("%s", szMsg3);          /* 'Ìa·©—i ˆñ¬a:' Â‰b */
+    printf("%s", szMsg3);          /* 'íŒŒì¼ë“¤ ê²€ì‚¬:' ì¶œë ¥ */
 
-    cOldDrive = getdisk();         /* Ñe¸ —aœa·¡§a ´è·q */
-    getcurdir(0, szOldDir + 1);    /* Ñe¸ —¡BÉ¡Ÿ¡ ´è·q */
+    cOldDrive = getdisk();         /* í˜„ì¬ ë“œë¼ì´ë¸Œ ì–»ìŒ */
+    getcurdir(0, szOldDir + 1);    /* í˜„ì¬ ë””ë ‰í† ë¦¬ ì–»ìŒ */
 
-    setdisk(cDrive);               /* ˆñ¬aĞi —aœa·¡§a¡ ¤a‘ */
-    chdir("\\");                   /* º —¡BÉ¡Ÿ¡¡ ¤a‘ */
+    setdisk(cDrive);               /* ê²€ì‚¬í•  ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ */
+    chdir("\\");                   /* ì£¼ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ */
 
-    if (CheckFiles("") == 0)       /* Ìa·©—i ˆñ¬a */
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+    if (CheckFiles("") == 0)       /* íŒŒì¼ë“¤ ê²€ì‚¬ */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
 
-    setdisk(cOldDrive);            /* ¶¥œ —aœa·¡§a¡ ¤a‘ */
-    chdir(szOldDir);               /* ¶¥œ —¡BÉ¡Ÿ¡¡ ¤a‘ */
+    setdisk(cOldDrive);            /* ì›ë˜ ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ */
+    chdir(szOldDir);               /* ì›ë˜ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ */
 
     return 0;
 }
@@ -128,172 +128,172 @@ int CheckFiles(char *szPath)
     int iFirst = 1, iStatus;
     struct ffblk FileBlock;
 
-    strcpy(szCurPath, szPath);     /* ˆñ¬aĞi —¡BÉ¡Ÿ¡ */
+    strcpy(szCurPath, szPath);     /* ê²€ì‚¬í•  ë””ë ‰í† ë¦¬ */
     strcat(szCurPath, "\\");
     strcat(szCurPath, "*.*");
 
     while(1) {
-        if (iFirst) {              /* Ìa·©·i Àx·q */
+        if (iFirst) {              /* íŒŒì¼ì„ ì°¾ìŒ */
             iStatus = findfirst(szCurPath, &FileBlock, FA_LIST);
             iFirst  = 0;
         } else
             iStatus = findnext(&FileBlock);
-        if (iStatus) return iInfFile; /* ”á ·¡¬w Ìa·©·¡ ´ô·q */
+        if (iStatus) return iInfFile; /* ë” ì´ìƒ íŒŒì¼ì´ ì—†ìŒ */
 
         if (strcmp(FileBlock.ff_name, ".") == 0) continue;
         if (strcmp(FileBlock.ff_name, "..") == 0) continue;
 
-        strcpy(szNewPath, szPath); /* Àx·e Ìa·© ·¡Ÿq */
+        strcpy(szNewPath, szPath); /* ì°¾ì€ íŒŒì¼ ì´ë¦„ */
         strcat(szNewPath, "\\");
         strcat(szNewPath, FileBlock.ff_name);
 
         if (FileBlock.ff_attrib & FA_DIREC) {
-            CheckFiles(szNewPath); /* ¸Šá Ñ¡Â‰ */
+            CheckFiles(szNewPath); /* ì¬ê·€ í˜¸ì¶œ */
         } else {
             if (CheckFileType(szNewPath) == 0)
-                CheckCom(szNewPath); /* COM Ìa·© ˆñ¬a */
+                CheckCom(szNewPath); /* COM íŒŒì¼ ê²€ì‚¬ */
             else
-                CheckExe(szNewPath); /* EXE Ìa·© ˆñ¬a */
+                CheckExe(szNewPath); /* EXE íŒŒì¼ ê²€ì‚¬ */
         }
     }
 }
 
-int CheckFileType(char *szFile)    /* Ìa·© ¹·ŸA Š¥i */
+int CheckFileType(char *szFile)    /* íŒŒì¼ ì¢…ë¥˜ êµ¬ë³„ */
 {
     int hHandle;
 
-    /* Ìa·© µ¡Ïe */
+    /* íŒŒì¼ ì˜¤í”ˆ */
     if ((hHandle = open(szFile, O_RDONLY | O_BINARY)) == -1) {
         printf("%s", szErrMsg2);
         exit(1);
     }
-    /* Ìa·© ·ª·q */
+    /* íŒŒì¼ ì½ìŒ */
     if (read(hHandle, sBuffer, 0x200) == -1) {
         close(hHandle);
         printf("%s", szErrMsg3);
         exit(1);
     }
-    /* Ìa·© ”h·q */
+    /* íŒŒì¼ ë‹«ìŒ */
     close(hHandle);
 
     if (((sBuffer[0] == 'M') && (sBuffer[1] == 'Z')) ||
         ((sBuffer[0] == 'Z') && (sBuffer[1] == 'M')))
-        return 1;                  /* EXE Ìa·© */
+        return 1;                  /* EXE íŒŒì¼ */
     else
-        return 0;                  /* COM Ìa·© */
+        return 0;                  /* COM íŒŒì¼ */
 }
 
-void CheckCom(char *szCom)         /* COM Ìa·© ˆñ¬a */
+void CheckCom(char *szCom)         /* COM íŒŒì¼ ê²€ì‚¬ */
 {
     int i, hHandle;
     unsigned int iOldLn, *pAlloc;
 
-    /* ¤a·¡œá¯a ˆñ¬a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬ */
 
     for (i = 0; i < JeruMemDx.cLen; i++)
         if (sBuffer[JeruMemDx.iOffset+i] != JeruMemDx.sVirStr[i])
             break;
 
-    /* ¤a·¡œá¯a Ã¡a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ */
 
-    if (i == JeruMemDx.cLen) {     /* ˆqµq Ìa·© ¤i‰e */
-        iInfFile++;                /* ˆqµq Ìa·© ® »wˆa */
+    if (i == JeruMemDx.cLen) {     /* ê°ì—¼ íŒŒì¼ ë°œê²¬ */
+        iInfFile++;                /* ê°ì—¼ íŒŒì¼ ìˆ˜ ì¦ê°€ */
         printf("%c:%s", cDrive + 'A', szCom);
         printf("%s", szMsg5);
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
 
-        /* ¶¥œ Ìa·© ‹©·¡ ´è·q */
+        /* ì›ë˜ íŒŒì¼ ê¸¸ì´ ì–»ìŒ */
         memcpy(&iOldLn, sBuffer + iOffOldLn, 2);
 
-        /* ‹¡´â¸w­¡ Ği”w */
+        /* ê¸°ì–µì¥ì†Œ í• ë‹¹ */
         if ((pAlloc = malloc(iOldLn)) == NULL) {
             printf("%s", szErrMsg1);
             exit(1);
         }
 
-        /* Ìa·© µ¡Ïe */
+        /* íŒŒì¼ ì˜¤í”ˆ */
         chmod(szCom, S_IREAD | S_IWRITE);
         if ((hHandle = open(szCom, O_RDWR | O_BINARY)) == -1) {
             printf("%s", szErrMsg2);
             exit(1);
         }
-        /* ¶¥œ Ìa·© ¶w ·ª·q */
+        /* ì›ë˜ íŒŒì¼ ë‚´ìš© ì½ìŒ */
         lseek(hHandle, iVirLn, SEEK_SET);
         if (read(hHandle, pAlloc, iOldLn) != iOldLn) {
             close(hHandle);
             printf("%s", szErrMsg3);
             exit(1);
         }
-        /* ¶¥œ Ìa·© ¶w ³q */
+        /* ì›ë˜ íŒŒì¼ ë‚´ìš© ì”€ */
         lseek(hHandle, 0, SEEK_SET);
         if (write(hHandle, pAlloc, iOldLn) != iOldLn) {
             close(hHandle);
             printf("%s", szErrMsg4);
             exit(1);
         }
-        /* Ìa·© ‹©·¡ ¥¢Š */
+        /* íŒŒì¼ ê¸¸ì´ ë³µêµ¬ */
         if (chsize(hHandle, iOldLn) == -1) {
             close(hHandle);
             printf("%s", szErrMsg4);
             exit(1);
         }
-        /* Ìa·© ”h·q */
+        /* íŒŒì¼ ë‹«ìŒ */
         close(hHandle);
 
-        /* ‹¡´â¸w­¡ Ğ¹A */
+        /* ê¸°ì–µì¥ì†Œ í•´ì œ */
         free(pAlloc);
 
-        printf("%s", szMsg7);      /* '-> Ã¡a' Â‰b */
+        printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 }
 
-void CheckExe(char *szExe)         /* EXE Ìa·© ˆñ¬a */
+void CheckExe(char *szExe)         /* EXE íŒŒì¼ ê²€ì‚¬ */
 {
     int i, hHandle;
     unsigned long lExeEntry, lOldLn;
     unsigned int sExeHead[0x10];
 
-    /* ¯©Ğ— ¯¡¸b ¶áÃ¡ ´è·q */
+    /* ì‹¤í–‰ ì‹œì‘ ìœ„ì¹˜ ì–»ìŒ */
     memcpy(sExeHead, sBuffer, 0x20);
     lExeEntry = (((long)sExeHead[8/2] + (long)sExeHead[0x16/2])
                                << 4L) + (long)sExeHead[0x14/2];
 
-    /* Ìa·© µ¡Ïe */
+    /* íŒŒì¼ ì˜¤í”ˆ */
     if ((hHandle = open(szExe, O_RDONLY | O_BINARY)) == -1) {
         printf("%s", szErrMsg2);
         exit(1);
     }
-    /* ¯©Ğ— ¯¡¸b ¦¶á ·ª·q */
+    /* ì‹¤í–‰ ì‹œì‘ ë¶€ìœ„ ì½ìŒ */
     lseek(hHandle, lExeEntry, SEEK_SET);
     if (read(hHandle, sBuffer, 0x200) == -1) {
         close(hHandle);
         printf("%s", szErrMsg3);
         exit(1);
     }
-    /* Ìa·© ”h·q */
+    /* íŒŒì¼ ë‹«ìŒ */
     close(hHandle);
 
-    /* ¤a·¡œá¯a ˆñ¬a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬ */
 
     for (i = 0; i < JeruExeDx.cLen; i++)
         if (sBuffer[JeruExeDx.iOffset+i] != JeruExeDx.sVirStr[i])
             break;
 
-    /* ¤a·¡œá¯a Ã¡a */
+    /* ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ */
 
     if (i == JeruExeDx.cLen) {
         iInfFile++;
         printf("%c:%s", cDrive + 'A', szExe);
         printf("%s", szMsg5);
-        printf("%s", szMsg6);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg6);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
 
-        /* Ìa·© µ¡Ïe */
+        /* íŒŒì¼ ì˜¤í”ˆ */
         chmod(szExe, S_IREAD | S_IWRITE);
         if ((hHandle = open(szExe, O_RDWR | O_BINARY)) == -1) {
             printf("%s", szErrMsg2);
             exit(1);
         }
-        /* ¶¥œ CS, IP, SS, SP ˆt—i ´è·q */
+        /* ì›ë˜ CS, IP, SS, SP ê°’ë“¤ ì–»ìŒ */
         lOldLn = lExeEntry - (long)iEntStLn;
         lseek(hHandle, lOldLn, SEEK_SET);
         if (read(hHandle, sBuffer, 0x200) == -1) {
@@ -305,27 +305,27 @@ void CheckExe(char *szExe)         /* EXE Ìa·© ˆñ¬a */
         memcpy(sExeHead + 0x14/2, sBuffer + iOffIP, 2);
         memcpy(sExeHead + 0x0E/2, sBuffer + iOffSS, 2);
         memcpy(sExeHead + 0x10/2, sBuffer + iOffSP, 2);
-        /* ¶¥œ ‹©·¡ ‰¬e */
+        /* ì›ë˜ ê¸¸ì´ ê³„ì‚° */
         sExeHead[2/2] = lOldLn % 0x200L;
         sExeHead[4/2] = lOldLn / 0x200L;
         if (sExeHead[2/2]) sExeHead[4/2]++;
-        /* ¬å–µwµb ¥¢Š */
+        /* ì„ ë‘ì˜ì—­ ë³µêµ¬ */
         lseek(hHandle, 0, SEEK_SET);
         if (write(hHandle, sExeHead, 0x20) != 0x20) {
             close(hHandle);
             printf("%s", szErrMsg4);
             exit(1);
         }
-        /* Ìa·© ‹©·¡ ¥¢Š */
+        /* íŒŒì¼ ê¸¸ì´ ë³µêµ¬ */
         if (chsize(hHandle, lOldLn) == -1) {
             close(hHandle);
             printf("%s", szErrMsg4);
             exit(1);
         }
-        /* Ìa·© ”h·q */
+        /* íŒŒì¼ ë‹«ìŒ */
         close(hHandle);
 
-       printf("%s", szMsg7);      /* '-> Ã¡a' Â‰b */
+       printf("%s", szMsg7);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 }
 

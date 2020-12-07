@@ -1,9 +1,9 @@
 
 /*---------------------------------------------------------------
 ;
-;         V-LBC2    LBC ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;         V-LBC2    LBC ë°”ì´ëŸ¬ìŠ¤ìš© ë°±ì‹  í”„ë¡œê·¸ë¨
 ;
-;                   (¸á) 1994  ´e Àé ®
+;                   (ì €) 1994  ì•ˆ ì²  ìˆ˜
 ;
 ;--------------------------------------------------------------*/
 
@@ -13,22 +13,22 @@
 #include <bios.h>
 #include <dos.h>
 
-struct DxStr {                     /* ¢…¸aµi ¯aËaœâÁa ¸÷· */
+struct DxStr {                     /* ë¬¸ìì—´ ìŠ¤íŠ¸ëŸ­ì³ ì •ì˜ */
     unsigned int iOffset;
     unsigned char cLen, sVirStr[10];
 };
-struct DxStr LbcMemDx = {          /* ‹¡´â¸w­¡ »¥”e¶w ¢…¸aµi */
+struct DxStr LbcMemDx = {          /* ê¸°ì–µì¥ì†Œ ì§„ë‹¨ìš© ë¬¸ìì—´ */
     0x117,
     10,
     {0x48, 0x48, 0x89, 0x07, 0xB1, 0x06, 0xD3, 0xE0, 0x8E, 0xC0}
 };
-struct DxStr LbcMbsDx = {          /* ¦Ëa ­BÈá »¥”e¶w ¢…¸aµi */
+struct DxStr LbcMbsDx = {          /* ë¶€íŠ¸ ì„¹í„° ì§„ë‹¨ìš© ë¬¸ìì—´ */
     0x17,
     10,
     {0x48, 0x48, 0x89, 0x07, 0xB1, 0x06, 0xD3, 0xE0, 0x8E, 0xC0}
 };
-unsigned int iOffOld13 = 0x178;    /* µ¡Ïa­U º­¡ */
-unsigned int iMemSize = 2;         /* ·©¤e ‹¡´â¸w­¡ ˆq­¡ Ça‹¡ */
+unsigned int iOffOld13 = 0x178;    /* ì˜¤í”„ì…‹ ì£¼ì†Œ */
+unsigned int iMemSize = 2;         /* ì¼ë°˜ ê¸°ì–µì¥ì†Œ ê°ì†Œ í¬ê¸° */
 unsigned char i, cDrive, sBuffer[0x200];
 char far *lpcMem;
 int  far *lpiMem;
@@ -48,40 +48,40 @@ char szErrMsg2[] = "\n\aERROR: disk write error\n";
 
 int main(int argc, char *argv[])
 {
-    printf("%s", szPrgName);       /* Ïa¡‹aœ‘ ·¡Ÿq Â‰b */
+    printf("%s", szPrgName);       /* í”„ë¡œê·¸ë¨ ì´ë¦„ ì¶œë ¥ */
 
-    if (argc == 1) {               /* ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b */
+    if (argc == 1) {               /* ì¸ì ì—†ì„ ë•Œ ë„ì›€ë§ ì¶œë ¥ */
         printf("%s", szMsg1);
         exit(0);
     }
 
     cDrive = toupper(*argv[1]) - 'A';
     if (cDrive >= 2)
-        cDrive += 0x7E;            /* ˆñ¬aĞi —aœa·¡§a ´i´a‘ */
+        cDrive += 0x7E;            /* ê²€ì‚¬í•  ë“œë¼ì´ë¸Œ ì•Œì•„ëƒ„ */
 
-    /* ·©¤e ‹¡´â¸w­¡ ˆñ¬a */
+    /* ì¼ë°˜ ê¸°ì–µì¥ì†Œ ê²€ì‚¬ */
 
-    printf("%s", szMsg2);          /* '‹¡´â¸w­¡ ˆñ¬a:' Â‰b */
+    printf("%s", szMsg2);          /* 'ê¸°ì–µì¥ì†Œ ê²€ì‚¬:' ì¶œë ¥ */
     lpcMem = MK_FP(biosmemory() << 6, LbcMemDx.iOffset);
     for (i = 0; i < LbcMemDx.cLen; i++)
         if (lpcMem[i] != LbcMemDx.sVirStr[i]) break;
     if (i != LbcMemDx.cLen)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-        printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg5);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
         r.x.ax = 0x2513;
         lpiMem = MK_FP(biosmemory() << 6, iOffOld13);
         r.x.dx = *lpiMem++;
         sr.ds  = *lpiMem;
-        intdosx(&r, &r, &sr);      /* 13h¤å ·¥ÈáœóËa º­¡ ¥¢Š */
+        intdosx(&r, &r, &sr);      /* 13hë²ˆ ì¸í„°ëŸ½íŠ¸ ì£¼ì†Œ ë³µêµ¬ */
         lpiMem = MK_FP(0x0000, 0x0413);
-        *lpiMem += iMemSize;       /* ·©¤e ‹¡´â¸w­¡· Ça‹¡ ¥¢Š */
-        printf("%s", szMsg6);      /* '-> Ã¡a' Â‰b */
+        *lpiMem += iMemSize;       /* ì¼ë°˜ ê¸°ì–µì¥ì†Œì˜ í¬ê¸° ë³µêµ¬ */
+        printf("%s", szMsg6);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
-    /* ¦Ëa ­BÈá ·ª·q */
+    /* ë¶€íŠ¸ ì„¹í„° ì½ìŒ */
 
-    printf("%s", szMsg3);          /* '¦Ëa ­BÈá ˆñ¬a:' Â‰b */
+    printf("%s", szMsg3);          /* 'ë¶€íŠ¸ ì„¹í„° ê²€ì‚¬:' ì¶œë ¥ */
 
     r.h.ah = 0x0D;
     intdos(&r, &r);
@@ -91,37 +91,37 @@ int main(int argc, char *argv[])
         biosdisk(0, cDrive, 0, 0, 1, 1, sBuffer);
     }
     if (i == 4) {
-        printf("%s", szErrMsg1);   /* —¡¯aÇa ·ª‹¡ µ¡ŸA */
+        printf("%s", szErrMsg1);   /* ë””ìŠ¤í¬ ì½ê¸° ì˜¤ë¥˜ */
         exit(1);
     }
 
-    /* ¦Ëa ­BÈá ˆñ¬a */
+    /* ë¶€íŠ¸ ì„¹í„° ê²€ì‚¬ */
 
     for (i = 0; i < LbcMbsDx.cLen; i++)
         if (sBuffer[LbcMbsDx.iOffset + i] != LbcMbsDx.sVirStr[i])
             break;
     if (i != LbcMbsDx.cLen)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-        printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg5);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
 
-        /* ¶¥œ ¦Ëa ­BÈá ·ª·q */
+        /* ì›ë˜ ë¶€íŠ¸ ì„¹í„° ì½ìŒ */
         if (biosdisk(2, cDrive, sBuffer[0x63], sBuffer[0x5E],
                       sBuffer[0x5D], 1, sBuffer)) {
-            printf("%s", szErrMsg1); /* —¡¯aÇa ·ª‹¡ µ¡ŸA */
+            printf("%s", szErrMsg1); /* ë””ìŠ¤í¬ ì½ê¸° ì˜¤ë¥˜ */
             exit(1);
         }
 
-        /* ¦Ëa ­BÈá Ã¡a */
+        /* ë¶€íŠ¸ ì„¹í„° ì¹˜ë£Œ */
         if (biosdisk(3, cDrive, 0, 0, 1, 1, sBuffer)) {
-            printf("%s", szErrMsg2); /* —¡¯aÇa ³a‹¡ µ¡ŸA */
+            printf("%s", szErrMsg2); /* ë””ìŠ¤í¬ ì“°ê¸° ì˜¤ë¥˜ */
             exit(1);
         }
 
         r.h.ah = 0x0D;
         intdos(&r, &r);
 
-        printf("%s", szMsg6);      /* '-> Ã¡a' Â‰b */
+        printf("%s", szMsg6);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
     return 0;

@@ -1,52 +1,52 @@
 
 ;----------------------------------------------------------------
 ;
-;         V-JERU1   µ¬iQ ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;         V-JERU1   ì˜ˆë£¨ì‚´ë ˜ ë°”ì´ëŸ¬ìŠ¤ìš© ë°±ì‹  í”„ë¡œê·¸ë¨
 ;
-;                   (¸á) 1994  ´e Àé ®
+;                   (ì €) 1994  ì•ˆ ì²  ìˆ˜
 ;
 ;----------------------------------------------------------------
 
           .MODEL  SMALL
           .STACK  100h
           .DATA
-JeruMemDx DW   0C5h                ; ‹¡´â¸w­¡ »¥”e¶w ¢…¸aµi
+JeruMemDx DW   0C5h                ; ê¸°ì–µì¥ì†Œ ì§„ë‹¨ìš© ë¬¸ìì—´
           DB   10
           DB   0FCh, 6, 2Eh, 8Ch, 6, 31h, 0, 2Eh, 8Ch, 6
-JeruExeDx DW   0                   ; EXE Ìa·© »¥”e¶w ¢…¸aµi
+JeruExeDx DW   0                   ; EXE íŒŒì¼ ì§„ë‹¨ìš© ë¬¸ìì—´
           DB   10
           DB   0FCh, 6, 2Eh, 8Ch, 6, 31h, 0, 2Eh, 8Ch, 6
-iVirLn    DW   710h                ; ¤a·¡œá¯a ‹©·¡
-iEntStLn  DW   0C5h                ; ¯¡¸b¸ñ Àa·¡ ‹©·¡
-iOffOld21 DW   17h                 ; ¶¥œ ·¥ÈáœóËa ¸á¸w ¶áÃ¡
-iOffOldLn DW   11h                 ; ¶¥œ Ìa·© ‹©·¡ ¸á¸w ¶áÃ¡
-iOffCS    DW   49h                 ; ¶¥œ CS ˆt ¸á¸w ¶áÃ¡
-iOffIP    DW   47h                 ; ¶¥œ IP ˆt ¸á¸w ¶áÃ¡
-iOffSS    DW   45h                 ; ¶¥œ SS ˆt ¸á¸w ¶áÃ¡
-iOffSP    DW   43h                 ; ¶¥œ SP ˆt ¸á¸w ¶áÃ¡
+iVirLn    DW   710h                ; ë°”ì´ëŸ¬ìŠ¤ ê¸¸ì´
+iEntStLn  DW   0C5h                ; ì‹œì‘ì  ì°¨ì´ ê¸¸ì´
+iOffOld21 DW   17h                 ; ì›ë˜ ì¸í„°ëŸ½íŠ¸ ì €ì¥ ìœ„ì¹˜
+iOffOldLn DW   11h                 ; ì›ë˜ íŒŒì¼ ê¸¸ì´ ì €ì¥ ìœ„ì¹˜
+iOffCS    DW   49h                 ; ì›ë˜ CS ê°’ ì €ì¥ ìœ„ì¹˜
+iOffIP    DW   47h                 ; ì›ë˜ IP ê°’ ì €ì¥ ìœ„ì¹˜
+iOffSS    DW   45h                 ; ì›ë˜ SS ê°’ ì €ì¥ ìœ„ì¹˜
+iOffSP    DW   43h                 ; ì›ë˜ SP ê°’ ì €ì¥ ìœ„ì¹˜
 
-lpOldDTA  DD   ?                   ; ¶¥œ DTA º­¡
-cOldDrive DB   ?                   ; ¶¥œ —aœa·¡§a
-szOldDir  DB   '\'                 ; ¶¥œ —¡BÉ¡Ÿ¡
+lpOldDTA  DD   ?                   ; ì›ë˜ DTA ì£¼ì†Œ
+cOldDrive DB   ?                   ; ì›ë˜ ë“œë¼ì´ë¸Œ
+szOldDir  DB   '\'                 ; ì›ë˜ ë””ë ‰í† ë¦¬
           DB   7Fh DUP(0)
-sDTA      DB   40h DUP(?)          ; ¬a¶wĞi DTA
-cDrive    DB   ?                   ; ˆñ¬aĞi —aœa·¡§a
-szCurDir  DB   '\'                 ; ˆñ¬aº—·¥ —¡BÉ¡Ÿ¡
+sDTA      DB   40h DUP(?)          ; ì‚¬ìš©í•  DTA
+cDrive    DB   ?                   ; ê²€ì‚¬í•  ë“œë¼ì´ë¸Œ
+szCurDir  DB   '\'                 ; ê²€ì‚¬ì¤‘ì¸ ë””ë ‰í† ë¦¬
           DB   7Fh DUP(0)
-pCurFile  DW   ?                   ; ˆñ¬aº—·¥ Ìa·©
+pCurFile  DW   ?                   ; ê²€ì‚¬ì¤‘ì¸ íŒŒì¼
 pDirLevel DW   OFFSET sDirLevel
 sDirLevel DB   40h DUP (1)
-sExeHead  DB   20h DUP (?)         ; ¬å–µwµb ¥¡‰Å¶w ¤áÌá
-sBuffer   DB   200h DUP(?)         ; Ìa·© ·ª´á—i·¡“e ¤áÌá
-cFileType DB   ?                   ; Ìa·© ¹·ŸA
-lOldLn    DD   ?                   ; ¶¥œ Ìa·© ‹©·¡
-pAlloc    DW   ?                   ; Ği”w ¤h·e ‹¡´â¸w­¡ º­¡
-lExeEntry DD   ?                   ; EXE Ìa·© ¯©Ğ— ¯¡¸b ¶áÃ¡
-iInfFile  DW   0                   ; ˆqµq Ìa·© ®
+sExeHead  DB   20h DUP (?)         ; ì„ ë‘ì˜ì—­ ë³´ê´€ìš© ë²„í¼
+sBuffer   DB   200h DUP(?)         ; íŒŒì¼ ì½ì–´ë“¤ì´ëŠ” ë²„í¼
+cFileType DB   ?                   ; íŒŒì¼ ì¢…ë¥˜
+lOldLn    DD   ?                   ; ì›ë˜ íŒŒì¼ ê¸¸ì´
+pAlloc    DW   ?                   ; í• ë‹¹ ë°›ì€ ê¸°ì–µì¥ì†Œ ì£¼ì†Œ
+lExeEntry DD   ?                   ; EXE íŒŒì¼ ì‹¤í–‰ ì‹œì‘ ìœ„ì¹˜
+iInfFile  DW   0                   ; ê°ì—¼ íŒŒì¼ ìˆ˜
 
-szRtDir   DB   '\', 0              ; º —¡BÉ¡Ÿ¡
-szPtDir   DB   '..', 0             ; ¦¡¡ —¡BÉ¡Ÿ¡
-szAll     DB   '*.*', 0            ; ¡¡—e Ìa·©
+szRtDir   DB   '\', 0              ; ì£¼ ë””ë ‰í† ë¦¬
+szPtDir   DB   '..', 0             ; ë¶€ëª¨ ë””ë ‰í† ë¦¬
+szAll     DB   '*.*', 0            ; ëª¨ë“  íŒŒì¼
 szPrgName DB   'V-JERU1 Vaccine program for Jerusalem virus'
           DB   0Dh, 0Ah
           DB   '       (c)Copyright 1994  by Cheolsoo Ahn'
@@ -71,7 +71,7 @@ szErrMsg4 DB   0Dh, 0Ah, 7, 'ERROR: file write error'
 Start:    mov  ax, @data
           mov  ds, ax
 
-          mov  bx, sp              ; Ği”w ¤h·e ‹¡´â¸w­¡ ¹A¹¡¸÷
+          mov  bx, sp              ; í• ë‹¹ ë°›ì€ ê¸°ì–µì¥ì†Œ ì œì¡°ì •
           add  bx, 0Fh
           and  bx, 0FFF0h
           mov  cl, 4
@@ -83,15 +83,15 @@ Start:    mov  ax, @data
           mov  ah, 4Ah
           int  21h
 
-          mov  ah, 9               ; Ïa¡‹aœ‘ ·¡Ÿq Â‰b
+          mov  ah, 9               ; í”„ë¡œê·¸ë¨ ì´ë¦„ ì¶œë ¥
           mov  dx, OFFSET szPrgName
           int  21h
 
-ChkArg:   mov  bx, 81h             ; ·¥¸a ˆñ¬a
+ChkArg:   mov  bx, 81h             ; ì¸ì ê²€ì‚¬
 ChkEnd:   mov  al, es:[bx]
           cmp  al, 0Dh
           jne  ChkSpace
-          mov  ah, 9               ; ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b
+          mov  ah, 9               ; ì¸ì ì—†ì„ ë•Œ ë„ì›€ë§ ì¶œë ¥
           mov  dx, OFFSET szMsg1
           int  21h
           jmp  Exit
@@ -101,20 +101,20 @@ ChkSpace: cmp  al, ' '
           inc  bx
           jmp  ChkEnd
 
-ChkDrv:   and  al, 5Fh             ; ˆñ¬aĞi —aœa·¡§a
+ChkDrv:   and  al, 5Fh             ; ê²€ì‚¬í•  ë“œë¼ì´ë¸Œ
           sub  al, 'A'
           mov  cDrive, al
 
-          ; ·©¤e ‹¡´â¸w­¡ ˆñ¬a
+          ; ì¼ë°˜ ê¸°ì–µì¥ì†Œ ê²€ì‚¬
 
-          mov  ah, 9               ; '‹¡´â¸w­¡ ˆñ¬a:' Â‰b
+          mov  ah, 9               ; 'ê¸°ì–µì¥ì†Œ ê²€ì‚¬:' ì¶œë ¥
           mov  dx, OFFSET szMsg2
           int  21h
 
           mov  ax, 3521h
           int  21h
 
-          mov  si, OFFSET JeruMemDx; ¤a·¡œá¯a ˆñ¬a
+          mov  si, OFFSET JeruMemDx; ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬
           lodsw
           mov  di, ax
           lodsb
@@ -123,88 +123,88 @@ ChkDrv:   and  al, 5Fh             ; ˆñ¬aĞi —aœa·¡§a
           repz cmpsb
           je   TxJeruMem
 
-          mov  ah, 9               ; '¤a·¡œá¯a ´ô·q' Â‰b
+          mov  ah, 9               ; 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥
           mov  dx, OFFSET szMsg4
           int  21h
           jmp  SrchDir
 
-          ; ‹¡´â¸w­¡ Ã¡a
+          ; ê¸°ì–µì¥ì†Œ ì¹˜ë£Œ
 
-TxJeruMem:mov  ah, 9               ; '¤a·¡œá¯a ¹¥¸' Â‰b
+TxJeruMem:mov  ah, 9               ; 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥
           mov  dx, OFFSET szMsg6
           int  21h
 
-          push ds                  ; 21h¤å ·¥ÈáœóËa º­¡ ¥¢Š
+          push ds                  ; 21hë²ˆ ì¸í„°ëŸ½íŠ¸ ì£¼ì†Œ ë³µêµ¬
           mov  di, iOffOld21
           mov  ax, 2521h
           lds  dx, es:[di]
           int  21h
           pop  ds
 
-          mov  ah, 9               ; '-> Ã¡a' Â‰b
+          mov  ah, 9               ; '-> ì¹˜ë£Œ' ì¶œë ¥
           mov  dx, OFFSET szMsg7
           int  21h
 
-          ; Ìa·©—i ˆñ¬a
+          ; íŒŒì¼ë“¤ ê²€ì‚¬
 
 Srchdir:  push ds
           pop  es
-          mov  ah, 9               ; 'Ìa·©—i ˆñ¬a:' Â‰b
+          mov  ah, 9               ; 'íŒŒì¼ë“¤ ê²€ì‚¬:' ì¶œë ¥
           mov  dx, OFFSET szMsg3
           int  21h
 
-          push es                  ; Ñe¸ DTA º­¡ ´è·q
+          push es                  ; í˜„ì¬ DTA ì£¼ì†Œ ì–»ìŒ
           mov  ah, 2Fh
           int  21h
           mov  WORD PTR lpOldDTA, bx
           mov  WORD PTR lpOldDTA[2], es
           pop  es
-          mov  ah, 19h             ; Ñe¸ —aœa·¡§a ´è·q
+          mov  ah, 19h             ; í˜„ì¬ ë“œë¼ì´ë¸Œ ì–»ìŒ
           int  21h
           mov  cOldDrive, al
           inc  al
-          mov  dl, al              ; Ñe¸ —¡BÉ¡Ÿ¡ ´è·q
+          mov  dl, al              ; í˜„ì¬ ë””ë ‰í† ë¦¬ ì–»ìŒ
           mov  ah, 47h
           mov  si, OFFSET szOldDir + 1
           int  21h
 
-          mov  ah, 1Ah             ; DTA ¤a‘
+          mov  ah, 1Ah             ; DTA ë°”ê¿ˆ
           mov  dx, OFFSET sDTA
           int  21h
-          mov  ah, 0Eh             ; ˆñ¬aĞi —aœa·¡§a¡ ¤a‘
+          mov  ah, 0Eh             ; ê²€ì‚¬í•  ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ
           mov  dl, cDrive
           int  21h
-          mov  ah, 3Bh             ; º —¡BÉ¡Ÿ¡¡ ¤a‘
+          mov  ah, 3Bh             ; ì£¼ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ
           mov  dx, OFFSET szRtDir
           int  21h
 
-          call CheckFiles          ; Ìa·©—i ˆñ¬a
+          call CheckFiles          ; íŒŒì¼ë“¤ ê²€ì‚¬
 
-          push ds                  ; ¶¥œ DTA¡ ¤a‘
+          push ds                  ; ì›ë˜ DTAë¡œ ë°”ê¿ˆ
           mov  ah, 1Ah
           mov  dx, WORD PTR lpOldDTA
           mov  ds, WORD PTR lpOldDTA[2]
           int  21h
-          pop  ds                  ; ¶¥œ —aœa·¡§a¡ ¤a‘
+          pop  ds                  ; ì›ë˜ ë“œë¼ì´ë¸Œë¡œ ë°”ê¿ˆ
           mov  ah, 0Eh
           mov  dl, cOldDrive
           int  21h
-          mov  ah, 3Bh             ; ¶¥œ —¡BÉ¡Ÿ¡¡ ¤a‘
+          mov  ah, 3Bh             ; ì›ë˜ ë””ë ‰í† ë¦¬ë¡œ ë°”ê¿ˆ
           mov  dx, OFFSET szOldDir
           int  21h
 
           cmp  iInfFile, 0
           jne  Exit
-          mov  ah, 9               ; '¤a·¡œá¯a ´ô·q' Â‰b
+          mov  ah, 9               ; 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥
           mov  dx, OFFSET szMsg4
           int  21h
 
-          ; ¯©Ğ— ¹·a
+          ; ì‹¤í–‰ ì¢…ë£Œ
 
 Exit:     mov  ax, 4C00h
           int  21h
 
-PrtErr:   mov  ah, 9               ; µAœá ¡A¯¡»¡ Â‰b
+PrtErr:   mov  ah, 9               ; ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥
           int  21h
 
           mov  ax, 4C01h
@@ -212,14 +212,14 @@ PrtErr:   mov  ah, 9               ; µAœá ¡A¯¡»¡ Â‰b
 
 ;----------------------------------------------------------------
 
-CheckFiles  PROC                   ; ¡¡—e —¡BÉ¡Ÿ¡ –á¹a Ìa·© ˆñ¬a
+CheckFiles  PROC                   ; ëª¨ë“  ë””ë ‰í† ë¦¬ ë’¤ì ¸ íŒŒì¼ ê²€ì‚¬
 
           push ax
           push bx
           push cx
           push si
 
-Find1st:  mov  ah, 4Eh             ; Ìa·©·i Àx·q
+Find1st:  mov  ah, 4Eh             ; íŒŒì¼ì„ ì°¾ìŒ
 FindFile: mov  cx, 100111b
           mov  dx, OFFSET szAll
           int  21h
@@ -227,35 +227,35 @@ FindFile: mov  cx, 100111b
 
           mov  pCurFile, OFFSET sDTA + 1Eh
           mov  dx, pCurFile
-          call CheckFileType       ; Ìa·© ¹·ŸA ˆñ¬a
+          call CheckFileType       ; íŒŒì¼ ì¢…ë¥˜ ê²€ì‚¬
           jc   ECF
 
           mov  dx, pCurFile
           cmp  cFileType, 0
           jne  ChkExe
-          call CheckCom            ; COM Ìa·© ˆñ¬a
+          call CheckCom            ; COM íŒŒì¼ ê²€ì‚¬
           jc   ECF
           jmp  FindNext
-ChkExe:   call CheckExe            ; EXE Ìa·© ˆñ¬a
+ChkExe:   call CheckExe            ; EXE íŒŒì¼ ê²€ì‚¬
           jc   ECF
 
-FindNext: mov  ah, 4Fh             ; ”a·q Ìa·© Àx·q
+FindNext: mov  ah, 4Fh             ; ë‹¤ìŒ íŒŒì¼ ì°¾ìŒ
           jmp  FindFile
 
 ECF:      jmp  ExitCF
 
-          ; ”aŸe —¡BÉ¡Ÿ¡¡ ·¡•·
+          ; ë‹¤ë¥¸ ë””ë ‰í† ë¦¬ë¡œ ì´ë™
 
 ChDir:    mov  si, pDirLevel
 FindDir:  xor  bl, bl
-          mov  ah, 4Eh             ; —¡BÉ¡Ÿ¡ Àx·q
+          mov  ah, 4Eh             ; ë””ë ‰í† ë¦¬ ì°¾ìŒ
           mov  cx, 10010b
           mov  dx, OFFSET szAll
           int  21h
           jc   ChkRtDir
           jmp  ChkDir
 
-NextDir:  mov  ah, 4Fh             ; ”a·q —¡BÉ¡Ÿ¡ Àx·q
+NextDir:  mov  ah, 4Fh             ; ë‹¤ìŒ ë””ë ‰í† ë¦¬ ì°¾ìŒ
           int  21h
           jc   ChkRtDir
 
@@ -269,7 +269,7 @@ IsCurDir: cmp  BYTE PTR sDTA[1Eh], '.'
           cmp  bl, [si]
           jnz  NextDir
 
-          mov  ah, 3Bh             ; Àx·e —¡BÉ¡Ÿ¡¡ ·¡•·
+          mov  ah, 3Bh             ; ì°¾ì€ ë””ë ‰í† ë¦¬ë¡œ ì´ë™
           mov  dx, OFFSET sDTA + 1Eh
           int  21h
           inc  BYTE PTR [si]
@@ -277,9 +277,9 @@ IsCurDir: cmp  BYTE PTR sDTA[1Eh], '.'
           mov  pDirLevel, si
           jmp  Find1st
 
-ChkRtDir: cmp  si, OFFSET sDirLevel; º —¡BÉ¡Ÿ¡·¥ˆa?
+ChkRtDir: cmp  si, OFFSET sDirLevel; ì£¼ ë””ë ‰í† ë¦¬ì¸ê°€?
           je   ExitCF
-          mov  ah, 3Bh             ; ¬w¶á —¡BÉ¡Ÿ¡¡ ·¡•·
+          mov  ah, 3Bh             ; ìƒìœ„ ë””ë ‰í† ë¦¬ë¡œ ì´ë™
           mov  dx, OFFSET szPtDir
           int  21h
           mov  BYTE PTR [si], 1
@@ -296,13 +296,13 @@ CheckFiles  ENDP
 
 ;----------------------------------------------------------------
 
-CheckFileType  PROC                ; Ìa·© ¹·ŸA Š¥i
+CheckFileType  PROC                ; íŒŒì¼ ì¢…ë¥˜ êµ¬ë³„
 
           push ax
           push bx
           push cx
 
-          ; Ìa·© µ¡Ïe
+          ; íŒŒì¼ ì˜¤í”ˆ
           mov  ax, 3D00h
           int  21h
           jnc  ReadFile
@@ -310,7 +310,7 @@ CheckFileType  PROC                ; Ìa·© ¹·ŸA Š¥i
           stc
           jmp  ExitCFT
 
-          ; Ìa·© ·ª·q
+          ; íŒŒì¼ ì½ìŒ
 ReadFile: mov  bx, ax
           mov  ah, 3Fh
           mov  cx, 200h
@@ -323,7 +323,7 @@ ReadFile: mov  bx, ax
           stc
           jmp  ExitCFT
 
-          ; Ìa·© ”h·q
+          ; íŒŒì¼ ë‹«ìŒ
 CloseFile:mov  ah, 3Eh
           int  21h
 
@@ -331,11 +331,11 @@ CloseFile:mov  ah, 3Eh
           je   ExeFile
           cmp  WORD PTR sBuffer, 'ZM'
           je   ExeFile
-          mov  cFileType, 0        ; COM Ìa·©
+          mov  cFileType, 0        ; COM íŒŒì¼
           clc
           jmp  ExitCFT
 
-ExeFile:  mov  cFileType, 1        ; EXE Ìa·©
+ExeFile:  mov  cFileType, 1        ; EXE íŒŒì¼
           clc
 
 ExitCFT:  pop  cx
@@ -347,7 +347,7 @@ CheckFileType  ENDP
 
 ;----------------------------------------------------------------
 
-CheckCom  PROC                     ; COM Ìa·© ˆñ¬a
+CheckCom  PROC                     ; COM íŒŒì¼ ê²€ì‚¬
 
           push ax
           push bx
@@ -355,7 +355,7 @@ CheckCom  PROC                     ; COM Ìa·© ˆñ¬a
           push si
           push di
 
-          ; ¤a·¡œá¯a ˆñ¬a
+          ; ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬
 
           mov  si, OFFSET JeruMemDx
           lodsw
@@ -369,22 +369,22 @@ CheckCom  PROC                     ; COM Ìa·© ˆñ¬a
           clc
           jmp  ExitCC
 
-          ; ¤a·¡œá¯a Ã¡a
+          ; ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ
 
-TxCom:    inc  iInfFile            ; ˆqµq Ìa·© ® »wˆa
-          call PrintPathname       ; Ìa·© ·¡Ÿq Â‰b
+TxCom:    inc  iInfFile            ; ê°ì—¼ íŒŒì¼ ìˆ˜ ì¦ê°€
+          call PrintPathname       ; íŒŒì¼ ì´ë¦„ ì¶œë ¥
 
-          push dx                  ; '¤a·¡œá¯a ¹¥¸' Â‰b
+          push dx                  ; 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥
           mov  ah, 9
           mov  dx, OFFSET szMsg5
           int  21h
 
-          ; ¶¥œ Ìa·© ‹©·¡ ´è·q
+          ; ì›ë˜ íŒŒì¼ ê¸¸ì´ ì–»ìŒ
           mov  bx, iOffOldLn
           mov  ax, WORD PTR sBuffer[bx]
           mov  WORD PTR lOldLn, ax
 
-          ; ‹¡´â¸w­¡ Ği”w
+          ; ê¸°ì–µì¥ì†Œ í• ë‹¹
           mov  ah, 48h
           mov  bx, 1000h
           int  21h
@@ -405,14 +405,14 @@ Alloc:    mov  pAlloc, ax
           stc
           jmp  ExitCC
 
-          ; Ìa·© µ¡Ïe
+          ; íŒŒì¼ ì˜¤í”ˆ
 SetFpCom1:mov  bx, ax
           mov  ax, 4200h
           xor  cx, cx
           mov  dx, iVirLn
           int  21h
 
-          ; ¶¥œ Ìa·© ¶w ·ª·q
+          ; ì›ë˜ íŒŒì¼ ë‚´ìš© ì½ìŒ
           push ds
           mov  ah, 3Fh
           mov  cx, WORD PTR lOldLn
@@ -427,7 +427,7 @@ SetFpCom1:mov  bx, ax
           stc
           jmp  ExitCC
 
-          ; ¶¥œ Ìa·© ¶w ³q
+          ; ì›ë˜ íŒŒì¼ ë‚´ìš© ì”€
 SetFpCom2:mov  ax, 4200h
           xor  cx, cx
           xor  dx, dx
@@ -446,7 +446,7 @@ SetFpCom2:mov  ax, 4200h
           stc
           jmp  ExitCC
 
-          ; Ìa·© ‹©·¡ ¥¢Š
+          ; íŒŒì¼ ê¸¸ì´ ë³µêµ¬
 AdjSize:  mov  ah, 40h
           xor  cx, cx
           int  21h
@@ -457,18 +457,18 @@ AdjSize:  mov  ah, 40h
           stc
           jmp  ExitCC
 
-          ; Ìa·© ”h·q
+          ; íŒŒì¼ ë‹«ìŒ
 CloseCom: mov  ah, 3Eh
           int  21h
 
-          ; ‹¡´â¸w­¡ Ğ¹A
+          ; ê¸°ì–µì¥ì†Œ í•´ì œ
           push es
           mov  ah, 49h
           mov  es, pAlloc
           int  21h
           pop  es
 
-          mov  ah, 9               ; '-> Ã¡a' Â‰b
+          mov  ah, 9               ; '-> ì¹˜ë£Œ' ì¶œë ¥
           mov  dx, OFFSET szMsg7
           int  21h
 
@@ -483,7 +483,7 @@ CheckCom  ENDP
 
 ;----------------------------------------------------------------
 
-CheckExe  PROC                     ; EXE Ìa·© ˆñ¬a
+CheckExe  PROC                     ; EXE íŒŒì¼ ê²€ì‚¬
 
           push ax
           push bx
@@ -491,7 +491,7 @@ CheckExe  PROC                     ; EXE Ìa·© ˆñ¬a
           push si
           push di
 
-          ; ¯©Ğ— ¯¡¸b ¶áÃ¡ ´è·q
+          ; ì‹¤í–‰ ì‹œì‘ ìœ„ì¹˜ ì–»ìŒ
           mov  si, OFFSET sBuffer
           mov  di, OFFSET sExeHead
           mov  cx, 10h
@@ -506,7 +506,7 @@ CheckExe  PROC                     ; EXE Ìa·© ˆñ¬a
           mov  WORD PTR lExeEntry, ax
           mov  WORD PTR lExeEntry[2], dx
 
-          ; Ìa·© µ¡Ïe
+          ; íŒŒì¼ ì˜¤í”ˆ
           mov  ax, 3D00h
           mov  dx, pCurFile
           int  21h
@@ -515,7 +515,7 @@ CheckExe  PROC                     ; EXE Ìa·© ˆñ¬a
           stc
           jmp  ExitCE
 
-          ; ¯©Ğ— ¯¡¸b ¦¶á ·ª·q
+          ; ì‹¤í–‰ ì‹œì‘ ë¶€ìœ„ ì½ìŒ
 SetFpExe1:mov  bx, ax
           mov  ax, 4200h
           mov  cx, WORD PTR lExeEntry[2]
@@ -532,11 +532,11 @@ SetFpExe1:mov  bx, ax
           stc
           jmp  ExitCE
 
-          ; Ìa·© ”h·q
+          ; íŒŒì¼ ë‹«ìŒ
 CloseExe1:mov  ah, 3Eh
           int  21h
 
-          ; ¤a·¡œá¯a ˆñ¬a
+          ; ë°”ì´ëŸ¬ìŠ¤ ê²€ì‚¬
 
           mov  si, OFFSET JeruExeDx
           lodsw
@@ -550,19 +550,19 @@ CloseExe1:mov  ah, 3Eh
           clc
           jmp  ExitCE
 
-          ; ¤a·¡œá¯a Ã¡a
+          ; ë°”ì´ëŸ¬ìŠ¤ ì¹˜ë£Œ
 
-TxExe:    inc  iInfFile            ; ˆqµq Ìa·© ® »wˆa
+TxExe:    inc  iInfFile            ; ê°ì—¼ íŒŒì¼ ìˆ˜ ì¦ê°€
           mov  dx, pCurFile
-          call PrintPathname       ; Ìa·© ·¡Ÿq Â‰b
+          call PrintPathname       ; íŒŒì¼ ì´ë¦„ ì¶œë ¥
 
-          push dx                  ; '¤a·¡œá¯a ¹¥¸' Â‰b
+          push dx                  ; 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥
           mov  ah, 9
           mov  dx, OFFSET szMsg5
           int  21h
           pop  dx
 
-          ; Ìa·© µ¡Ïe
+          ; íŒŒì¼ ì˜¤í”ˆ
           mov  ax, 4300h
           xor  cx, cx
           int  21h
@@ -573,8 +573,8 @@ TxExe:    inc  iInfFile            ; ˆqµq Ìa·© ® »wˆa
           stc
           jmp  ExitCE
 
-          ; ¶¥œ CS, IP, SS, SP ˆt—i ´è·q
-SetFpExe2:mov  bx, ax              ; ¤a·¡œá¯a ¯¡¸b ¦¶á ·ª·q
+          ; ì›ë˜ CS, IP, SS, SP ê°’ë“¤ ì–»ìŒ
+SetFpExe2:mov  bx, ax              ; ë°”ì´ëŸ¬ìŠ¤ ì‹œì‘ ë¶€ìœ„ ì½ìŒ
           mov  ax, 4200h
           mov  dx, WORD PTR lExeEntry
           mov  cx, WORD PTR lExeEntry[2]
@@ -594,20 +594,20 @@ SetFpExe2:mov  bx, ax              ; ¤a·¡œá¯a ¯¡¸b ¦¶á ·ª·q
           stc
           jmp  ExitCE
 
-GetEntry: mov  si, iOffCS          ; ¶¥œ CS ˆt ´è·q
+GetEntry: mov  si, iOffCS          ; ì›ë˜ CS ê°’ ì–»ìŒ
           mov  ax, WORD PTR sBuffer[si]
           mov  WORD PTR sExeHead[16h], ax
-          mov  si, iOffIP          ; ¶¥œ IP ˆt ´è·q
+          mov  si, iOffIP          ; ì›ë˜ IP ê°’ ì–»ìŒ
           mov  ax, WORD PTR sBuffer[si]
           mov  WORD PTR sExeHead[14h], ax
-          mov  si, iOffSS          ; ¶¥œ SS ˆt ´è·q
+          mov  si, iOffSS          ; ì›ë˜ SS ê°’ ì–»ìŒ
           mov  ax, WORD PTR sBuffer[si]
           mov  WORD PTR sExeHead[0Eh], ax
-          mov  si, iOffSP          ; ¶¥œ SP ˆt ´è·q
+          mov  si, iOffSP          ; ì›ë˜ SP ê°’ ì–»ìŒ
           mov  ax, WORD PTR sBuffer[si]
           mov  WORD PTR sExeHead[10h], ax
 
-          ; ¶¥œ ‹©·¡ ‰¬e
+          ; ì›ë˜ ê¸¸ì´ ê³„ì‚°
           mov  dx, WORD PTR lOldLn[2]
           mov  ax, WORD PTR lOldLn
           mov  cx, 200h
@@ -618,7 +618,7 @@ GetEntry: mov  si, iOffCS          ; ¶¥œ CS ˆt ´è·q
 NoRmnd:   mov  WORD PTR sExeHead[2], dx
           mov  WORD PTR sExeHead[4], ax
 
-          ; ¬å–µwµb ¥¢Š
+          ; ì„ ë‘ì˜ì—­ ë³µêµ¬
           mov  ax, 4200h
           xor  cx, cx
           xor  dx, dx
@@ -634,7 +634,7 @@ NoRmnd:   mov  WORD PTR sExeHead[2], dx
           stc
           jmp  ExitCE
 
-          ; Ìa·© ‹©·¡ ¥¢Š
+          ; íŒŒì¼ ê¸¸ì´ ë³µêµ¬
 SetFpExe3:mov  ax, 4200h
           mov  dx, WORD PTR lOldLn
           mov  cx, WORD PTR lOldLn[2]
@@ -649,11 +649,11 @@ SetFpExe3:mov  ax, 4200h
           stc
           jmp  ExitCE
 
-          ; Ìa·© ”h·q
+          ; íŒŒì¼ ë‹«ìŒ
 CloseExe2:mov  ah, 3Eh
           int  21h
 
-          mov  ah, 9               ; '-> Ã¡a' Â‰b
+          mov  ah, 9               ; '-> ì¹˜ë£Œ' ì¶œë ¥
           mov  dx, OFFSET szMsg7
           int  21h
 
@@ -667,13 +667,13 @@ ExitCE:   pop  di
 CheckExe  ENDP
 
 ;----------------------------------------------------------------
-PrintPathname  PROC                ; µÅ¸åĞe Ì¯a ·¡Ÿq Â‰b
+PrintPathname  PROC                ; ì™„ì „í•œ íŒ¨ìŠ¤ ì´ë¦„ ì¶œë ¥
 
           push ax
           push dx
           push si
 
-          push dx                  ; —aœa·¡§a ·¡Ÿq Â‰b
+          push dx                  ; ë“œë¼ì´ë¸Œ ì´ë¦„ ì¶œë ¥
           mov  ah, 2
           mov  dl, cDrive
           add  dl, 'A'
@@ -681,12 +681,12 @@ PrintPathname  PROC                ; µÅ¸åĞe Ì¯a ·¡Ÿq Â‰b
           mov  dl, ':'
           int  21h
 
-          mov  ah, 48h             ; Ñe¸ —¡BÉ¡Ÿ¡ ´è·q
+          mov  ah, 48h             ; í˜„ì¬ ë””ë ‰í† ë¦¬ ì–»ìŒ
           xor  dl, dl
           mov  si, OFFSET szCurDir + 1
           int  21h
 
-          cmp  BYTE PTR [si], 0    ; Ñe¸ —¡BÉ¡Ÿ¡ ·¡Ÿq Â‰b
+          cmp  BYTE PTR [si], 0    ; í˜„ì¬ ë””ë ‰í† ë¦¬ ì´ë¦„ ì¶œë ¥
           je   PrtFn
           dec  si
           mov  ah, 2
@@ -697,11 +697,11 @@ PathChr:  mov  dl, [si]
           inc  si
           jmp  PathChr
 
-PrtFn:    mov  ah, 2               ; '\' Â‰b
+PrtFn:    mov  ah, 2               ; '\' ì¶œë ¥
           mov  dl, '\'
           int  21h
 
-          pop  si                  ; Ìa·© ·¡Ÿq Â‰b
+          pop  si                  ; íŒŒì¼ ì´ë¦„ ì¶œë ¥
           mov  ah, 2
 FileChr:  mov  dl, [si]
           cmp  dl, 0

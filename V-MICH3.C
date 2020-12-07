@@ -1,9 +1,9 @@
 
 /*---------------------------------------------------------------
 ;
-;         V-MICH3   £¡ÅIœe¹I¡ ¤a·¡œá¯a¶w ¤‚¯¥ Ïa¡‹aœ‘
+;         V-MICH3   ë¯¸ì¼ˆë€ì ¤ë¡œ ë°”ì´ëŸ¬ìŠ¤ìš© ë°±ì‹  í”„ë¡œê·¸ë¨
 ;
-;                   (¸á) 1994  ´e Àé ®
+;                   (ì €) 1994  ì•ˆ ì²  ìˆ˜
 ;
 ;--------------------------------------------------------------*/
 
@@ -44,37 +44,37 @@ char szErrMsg2[] = "\n\aERROR: disk write error\n";
 
 int main(int argc, char *argv[])
 {
-    printf("%s", szPrgName);       /* Ïa¡‹aœ‘ ·¡Ÿq Â‰b */
+    printf("%s", szPrgName);       /* í”„ë¡œê·¸ë¨ ì´ë¦„ ì¶œë ¥ */
 
-    if (argc == 1) {               /* ·¥¸a ´ô·i ˜ •¡¶‘ i Â‰b */
+    if (argc == 1) {               /* ì¸ì ì—†ì„ ë•Œ ë„ì›€ë§ ì¶œë ¥ */
         printf("%s", szMsg1);
         exit(0);
     }
 
     cDrive = toupper(*argv[1]) - 'A';
 
-    /* ·©¤e ‹¡´â¸w­¡ ˆñ¬a */
+    /* ì¼ë°˜ ê¸°ì–µì¥ì†Œ ê²€ì‚¬ */
 
-    printf("%s", szMsg2);          /* '‹¡´â¸w­¡ ˆñ¬a:' Â‰b */
+    printf("%s", szMsg2);          /* 'ê¸°ì–µì¥ì†Œ ê²€ì‚¬:' ì¶œë ¥ */
     if (CheckBootVirusInMem(&MichDxStr) == 0)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-        printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+        printf("%s", szMsg5);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
         CureBootVirusInMem(0, &MichMemTxStr);
-        printf("%s", szMsg6);      /* '-> Ã¡a' Â‰b */
+        printf("%s", szMsg6);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
-    /* ¦Ëa ­BÈá ·ª·q */
+    /* ë¶€íŠ¸ ì„¹í„° ì½ìŒ */
 
-    printf("%s", szMsg3);          /* '¦Ëa ­BÈá ˆñ¬a:' Â‰b */
+    printf("%s", szMsg3);          /* 'ë¶€íŠ¸ ì„¹í„° ê²€ì‚¬:' ì¶œë ¥ */
     if ((iResult=CheckBootVirusInMBS(cDrive,&MichDxStr)) == -1) {
-        printf("%s", szErrMsg1);   /* —¡¯aÇa ·ª‹¡ µ¡ŸA */
+        printf("%s", szErrMsg1);   /* ë””ìŠ¤í¬ ì½ê¸° ì˜¤ë¥˜ */
         exit(1);
     }
     if (iResult == 0)
-        printf("%s", szMsg4);      /* '¤a·¡œá¯a ´ô·q' Â‰b */
+        printf("%s", szMsg4);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì—†ìŒ' ì¶œë ¥ */
     else {
-		printf("%s", szMsg5);      /* '¤a·¡œá¯a ¹¥¸' Â‰b */
+		printf("%s", szMsg5);      /* 'ë°”ì´ëŸ¬ìŠ¤ ì¡´ì¬' ì¶œë ¥ */
         pMbsTxStr = (cDrive < 2) ? &MichFdTxStr : &MichHdTxStr;
 		if (CureBootVirusInMBS(cDrive, 0x10, pMbsTxStr) == -1) {
             switch (wErrCode) {
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
                         exit(1);
             }
         } else
-            printf("%s", szMsg6);      /* '-> Ã¡a' Â‰b */
+            printf("%s", szMsg6);      /* '-> ì¹˜ë£Œ' ì¶œë ¥ */
     }
 
     return 0;

@@ -22,4 +22,3 @@ V-LBC3   C       2,709                           - example of boot virus #2
 V-LBC3   EXE    10,312
 V-JERU3  C       7,192                           - example of file virus
 V-JERU3  EXE    11,828
-
